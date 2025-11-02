@@ -46,17 +46,6 @@ spec:
                 secretKeyRef:
                   name: gympal-secrets
                   key: VITE_SUPABASE_ANON_KEY
-          volumeMounts:
-            - name: nginx-conf
-              mountPath: /etc/nginx/conf.d/default.conf
-              subPath: nginx.conf
-      volumes: # Mount NGINX config from ConfigMap so that SPA routing works correctly. This overrides the default NGINX config.
-        - name: nginx-conf
-          configMap:
-            name: gympal-config
-            items:
-              - key: nginx.conf
-                path: nginx.conf
 ---
 apiVersion: v1
 kind: Service
