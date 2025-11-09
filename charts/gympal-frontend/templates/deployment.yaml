@@ -39,24 +39,10 @@ spec:
             - name: VITE_SUPABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: gympal-secrets
+                  name: gympal-frontend-secrets
                   key: VITE_SUPABASE_URL
             - name: VITE_SUPABASE_ANON_KEY
               valueFrom:
                 secretKeyRef:
-                  name: gympal-secrets
+                  name: gympal-frontend-secrets
                   key: VITE_SUPABASE_ANON_KEY
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: gympal-frontend
-spec:
-  type: NodePort
-  selector:
-    app: gympal-frontend # Select pods with label "app: gympal-frontend"
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 3000
-      nodePort: 30080 # Port to access the service from outside the cluster
