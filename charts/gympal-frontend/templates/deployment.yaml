@@ -1,48 +1,55 @@
-# ============================================================
-# FRONTEND DEPLOYMENT + SERVICE
-# ============================================================
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gympal-frontend
+  name: {{ include "gympal-frontend.fullname" . }}
+  labels:
+    {{- include "gympal-frontend.labels" . | nindent 4 }}
 spec:
-  replicas: 1
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
   selector:
-    matchLabels: # Determine which label defines the pods that are part of the pool from this Deployment
-      app: gympal-frontend
+    matchLabels:
+      {{- include "gympal-frontend.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       labels:
-        app: gympal-frontend
+        {{- include "gympal-frontend.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
-      imagePullSecrets: # Secret that contains github token for authentication
-        - name: ghcr-secret
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "gympal-frontend.serviceAccountName" . }}
       containers:
-        - name: gympal-frontend
-          image: ghcr.io/arnaugg9/gympalfrontend-frontend:latest
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: 80
-          resources: # Resource requests and limits for the container within a Pod
-            requests: # Minimum resources required
-              cpu: "100m"
-              memory: "128Mi"
-            limits: # Maximum resources allowed
-              cpu: "250m"
-              memory: "256Mi"
-          # Environment variables for the container whithin a Pod
-          # Safe public vars
-          envFrom: # Load all vars from a ConfigMap
-            - configMapRef:
-                name: gympal-config
-          # Sensitive public vars
-          env:
-            - name: VITE_SUPABASE_URL
-              valueFrom:
-                secretKeyRef:
-                  name: gympal-frontend-secrets
-                  key: VITE_SUPABASE_URL
-            - name: VITE_SUPABASE_ANON_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: gympal-frontend-secrets
-                  key: VITE_SUPABASE_ANON_KEY
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          envFrom:
+          - secretRef:
+              name: {{ include "gympal-frontend.fullname" . }}-env-secret
+          {{ - end }}
+      
