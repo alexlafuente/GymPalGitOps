@@ -41,9 +41,9 @@ ingress:
           pathType: Prefix
           backend:
             service:
-              name: {{ include "gympal-frontend.fullname" . }}
+              name: gympal-frontend
               port:
-                number: {{ .Values.service.port }}
+                number: 80
   tls: []
   # Example:
   # tls:
