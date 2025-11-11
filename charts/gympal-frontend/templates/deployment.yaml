@@ -51,4 +51,6 @@ spec:
           envFrom:
           - secretRef:
               name: {{ include "gympal-frontend.fullname" . }}-env-secret
+          - configMapRef:
+              name: {{ include "gympal-frontend.fullname" . }}-env-configmap
       

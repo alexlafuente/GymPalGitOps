@@ -39,14 +39,11 @@ service:
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
   enabled: true
-  className: "nginx"
+  className: nginx
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
-    # nginx.ingress.kubernetes.io/rewrite-target: /  # optional, only if needed
-    # kubernetes.io/tls-acme: "true"
-
   hosts:
-    - host: gympal.example.com
+    - host: app.gympal.com
       paths:
         - path: /
           pathType: Prefix
@@ -56,11 +53,13 @@ ingress:
               port:
                 number: 3000
   tls: []
+
+ # Disable TLS by default
   # Example:
   # tls:
   #   - secretName: gympal-tls
   #     hosts:
-  #       - gympal.example.com
+  #       - app.gympal.com
 
 # Resources limits and requests more information can be found here: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
@@ -107,3 +106,6 @@ envSecrets:
   # Frontend Secrets
   VITE_SUPABASE_URL: "https://rkqwxbynswjpwibflfik.supabase.co"
   VITE_SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJrcXd4Ynluc3dqcHdpYmZsZmlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwMDkxNzgsImV4cCI6MjA3NjU4NTE3OH0.-gdk8ZdmvfPHCvHgMtjDGBu7LdggakgPuNVckHTdkwo"
+envConfigMap:
+  # Frontend Configs
+  BACKEND_URL: "http://app.gympal.com"

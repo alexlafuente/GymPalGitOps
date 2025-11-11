@@ -39,32 +39,19 @@ service:
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
   enabled: true
-  className: "nginx"
+  className: nginx
   annotations:
-    nginx.ingress.kubernetes.io/use-regex: "true" # Enable regex support for paths. TODO: verify if this is needed
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
   hosts:
-    - host: gympal.example.com
+    - host: app.gympal.com
       paths:
-        # API routes with version prefix
-        - path: /api/v1
+        - path: /api
           pathType: Prefix
           backend:
             service:
               name: gympal-backend
               port:
                 number: 3000
-
-        # System routes
-        # - path: / # TODO: revise to avoid conflict with frontend (right now frontend handles / path, so the api main route is not accessible)
-        #   pathType: Prefix
-        #   backend:
-        #     service:
-        #       name: gympal-backend
-        #       port:
-        #         number: 3000
-
         - path: /health
           pathType: Prefix
           backend:
@@ -72,7 +59,6 @@ ingress:
               name: gympal-backend
               port:
                 number: 3000
-
         - path: /reference
           pathType: Prefix
           backend:
@@ -80,7 +66,6 @@ ingress:
               name: gympal-backend
               port:
                 number: 3000
-
         - path: /openapi.json
           pathType: Prefix
           backend:
@@ -89,9 +74,14 @@ ingress:
               port:
                 number: 3000
   tls: []
-  #  - secretName: gympal-tls
-  #    hosts:
-  #      - gympal.example.com
+
+
+
+  # Example TLS entry (uncomment and adjust to enable TLS for a host):
+  # tls:
+  #   - hosts:
+  #       - api.gympal.com
+  #     secretName: gympal-api-tls
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious

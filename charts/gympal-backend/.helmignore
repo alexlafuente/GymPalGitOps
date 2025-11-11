@@ -22,4 +22,5 @@
 *.tmproj
 .vscode/
 
+# Helm extra files
 NOTES.txt
