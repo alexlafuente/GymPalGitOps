@@ -42,6 +42,7 @@ ingress:
   className: nginx
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
+    cert-manager.io/cluster-issuer: selfsigned-cluster-issuer # Uncomment this line to enable cert-manager with a specific cluster issuer. This will create TLS certificates for the backend.
   hosts:
     - host: app.gympal.com
       paths:
@@ -73,15 +74,10 @@ ingress:
               name: gympal-backend
               port:
                 number: 3000
-  tls: []
-
-
-
-  # Example TLS entry (uncomment and adjust to enable TLS for a host):
-  # tls:
-  #   - hosts:
-  #       - api.gympal.com
-  #     secretName: gympal-api-tls
+  tls:
+    - hosts:
+        - app.gympal.com
+      secretName: gympal-app-tls
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -128,6 +124,7 @@ envSecrets:
   SUPABASE_SERVICE_ROLE_KEY: "your_supabase_service_role_key_here"
   JWT_SECRET: "your_jwt_secret_minimum_32_characters_long_random_string"
   SMTP_PASS: "your_smtp_password"
+  
 
   POSTGRES_USER: "postgres"
   POSTGRES_PASSWORD: "postgres"
