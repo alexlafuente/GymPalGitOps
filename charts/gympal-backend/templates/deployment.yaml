@@ -51,3 +51,4 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ include "gympal-backend.fullname" . }}-env-secret
+            

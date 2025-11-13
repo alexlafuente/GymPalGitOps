@@ -11,7 +11,7 @@ image:
   # This sets the pull policy for images.
   pullPolicy: Always # The image will always be pulled from the repository when a pod is started. This is useful for development and testing when images are frequently updated. ArgoCD will use this to always check for new image versions.
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "0779337" # Override the image tag to use a specific version of the image. ArgoCD will use this to determine if there is a new version to deploy.
+  tag: "717fb93" # Override the image tag to use a specific version of the image. ArgoCD will use this to determine if there is a new version to deploy.
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: 
@@ -53,27 +53,6 @@ ingress:
               name: gympal-backend
               port:
                 number: 3000
-        - path: /health
-          pathType: Prefix
-          backend:
-            service:
-              name: gympal-backend
-              port:
-                number: 3000
-        - path: /reference
-          pathType: Prefix
-          backend:
-            service:
-              name: gympal-backend
-              port:
-                number: 3000
-        - path: /openapi.json
-          pathType: Prefix
-          backend:
-            service:
-              name: gympal-backend
-              port:
-                number: 3000
   tls:
     - hosts:
         - app.gympal.com
@@ -94,7 +73,7 @@ resources:
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
   httpGet:
-    path: /health
+    path: /api/health
     port: http
   initialDelaySeconds: 10
   periodSeconds: 15
@@ -102,7 +81,7 @@ livenessProbe:
   failureThreshold: 3
 readinessProbe:
   httpGet:
-    path: /health
+    path: /api/health
     port: http
   initialDelaySeconds: 10
   periodSeconds: 15
@@ -128,3 +107,7 @@ envSecrets:
 
   POSTGRES_USER: "postgres"
   POSTGRES_PASSWORD: "postgres"
+  
+envConfigMap:
+  # Frontend Configs
+  FRONTEND_URL: "https://app.gympal.com"
