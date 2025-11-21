@@ -23,10 +23,6 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       serviceAccountName: {{ include "gympal-backend.serviceAccountName" . }}
       containers:
         - name: {{ .Chart.Name }}
@@ -51,4 +47,5 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ include "gympal-backend.fullname" . }}-env-secret
-            
+            - configMapRef:
+                name: {{ include "gympal-backend.fullname" . }}-env-configmap

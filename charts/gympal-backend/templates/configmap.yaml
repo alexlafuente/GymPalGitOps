@@ -3,7 +3,6 @@ kind: ConfigMap
 metadata:
   name: {{ include "gympal-backend.fullname" . }}-env-configmap
   labels:
-    {{- include "gympal-backend.labels" . | nindent 4 }}
 data:
   {{- range $key, $value := .Values.envConfigMap }}
   {{ $key }}: "{{ $value }}"
