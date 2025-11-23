@@ -4,15 +4,13 @@
 
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
-
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
   repository: ghcr.io/arnaugg9/gympalfrontend-frontend
   # This sets the pull policy for images.
   pullPolicy: Always # The image will always be pulled from the repository when a pod is started. This is useful for development and testing when images are frequently updated. ArgoCD will use this to always check for new image versions.
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "90b7d18" # Override the image tag to use a specific version of the image. ArgoCD will use this to determine if there is a new version to deploy.
-
+  tag: "f8db71c" # Override the image tag to use a specific version of the image. ArgoCD will use this to determine if there is a new version to deploy.
 # This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:
   # Specifies whether a service account should be created
@@ -24,14 +22,12 @@ serviceAccount:
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
-
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   type: ClusterIP
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
   port: 3000
-
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
   enabled: true
@@ -53,21 +49,18 @@ ingress:
     - hosts:
         - app.gympal.com
       secretName: gympal-app-tls
-
 # Resources limits and requests more information can be found here: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
-
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-   limits:
-     cpu: 500m
-     memory: 512Mi
-   requests:
-     cpu: 100m
-     memory: 128Mi
-
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
   httpGet:
@@ -77,7 +70,6 @@ livenessProbe:
   periodSeconds: 15
   timeoutSeconds: 3
   failureThreshold: 3
-
 readinessProbe:
   httpGet:
     path: /
@@ -86,7 +78,6 @@ readinessProbe:
   periodSeconds: 10
   timeoutSeconds: 3
   failureThreshold: 3
-
 # This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:
   enabled: false
@@ -94,7 +85,6 @@ autoscaling:
   maxReplicas: 2
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
-
 envSecrets:
   # Frontend Secrets
   VITE_SUPABASE_URL: "https://rkqwxbynswjpwibflfik.supabase.co"
