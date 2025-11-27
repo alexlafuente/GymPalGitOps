@@ -87,8 +87,11 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 envSecrets:
   # Frontend Secrets
-  VITE_SUPABASE_URL: "https://rkqwxbynswjpwibflfik.supabase.co"
-  VITE_SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJrcXd4Ynluc3dqcHdpYmZsZmlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwMDkxNzgsImV4cCI6MjA3NjU4NTE3OH0.-gdk8ZdmvfPHCvHgMtjDGBu7LdggakgPuNVckHTdkwo"
+  NEXT_PUBLIC_SUPABASE_URL: "http://localhost:3000/"
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJrcXd4Ynluc3dqcHdpYmZsZmlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwMDkxNzgsImV4cCI6MjA3NjU4NTE3OH0.-gdk8ZdmvfPHCvHgMtjDGBu7LdggakgPuNVckHTdkwo"
 envConfigMap:
   # Frontend Configs
-  BACKEND_URL: "http://app.gympal.com"
+  # VITE_API_BASE_URL: "https://app.gympal.com/api"
+  # NEXT_PUBLIC_API_URL: "https://app.gympal.com/api"
+  # NEXT_PUBLIC_API_BASE_URL: "https://app.gympal.com/api"
+  
